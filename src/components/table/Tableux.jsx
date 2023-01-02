@@ -10,24 +10,45 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FormOrg from "../form/FormOrg";
-import List from '../list/List';
+import List from "../list/List";
 import "./tableux.scss";
 import { Link } from "react-router-dom";
-import {BsThreeDotsVertical} from "react-icons/bs";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
-const columns = [
- 
-];
+// function createData(
+//   orgName,
+//   userName,
+//   email,
+//   phoneNumber,
+//   createdAt,
+//   employmentStatus
+// ) {
+//   return { orgName, userName, email, phoneNumber, createdAt, employmentStatus };
+// }
 
-
-const Rows = [
- 
-];
+// const rows = [
+//   createData(
+//     "orgName",
+//     "userName",
+//     "email",
+//     "phoneNumber",
+//     "createdAt",
+//     "employmentStatus"
+//   ),
+//   createData(
+//     "orgName",
+//     "userName",
+//     "email",
+//     "phoneNumber",
+//     "createdAt",
+//     "employmentStatus"
+//   ),
+// ];
 
 export default function StickyHeadTable() {
   const [open, setOpen] = React.useState(false);
   const [rows, setRow] = React.useState([]);
-   const [openModal, setOpenModal] =  React.useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -41,23 +62,21 @@ export default function StickyHeadTable() {
   };
 
   useEffect(() => {
-
-const users = localStorage.getItem("users")
-if(!users){
-
-    fetch("https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-        localStorage.setItem("users",JSON.stringify(data ))
-         setRow(data)
-      });
-    }else{
-      setRow(JSON.parse(users))
+    const users = localStorage.getItem("users");
+    if (!users) {
+      fetch("https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          localStorage.setItem("users", JSON.stringify(data));
+          setRow(data);
+        });
+    } else {
+      setRow(JSON.parse(users));
     }
   }, []);
   return (
-    <div className="table--comp">      
+    <div className="table--comp">
       <Paper
         sx={{ width: "100%", overflow: "hidden" }}
         className="table--container"
@@ -126,43 +145,29 @@ if(!users){
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
-                  console.log(row)
+                  console.log(row);
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.id}
-                    >
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                       {}
+                      <TableCell key={Date.now()}>{row.orgName}</TableCell>
+                      <TableCell key={Date.now()}>{row.userName}</TableCell>
+                      <TableCell key={Date.now()}>{row.email}</TableCell>
+                      <TableCell key={Date.now()}>{row.phoneNumber}</TableCell>
+                      <TableCell key={Date.now()}>{row.createdAt}</TableCell>
                       <TableCell key={Date.now()}>
-                       {row.orgName}
+                        {row.education.employmentStatus}
                       </TableCell>
-                       <TableCell key={Date.now()}>
-                        {row.userName}
-                       </TableCell>
-                       <TableCell key={Date.now()}>
-                        {row.email}
-                       </TableCell>
-                       <TableCell key={Date.now()}>
-                        {row.phoneNumber}
-                       </TableCell>
-                       <TableCell key={Date.now()}>
-                        {row.createdAt}
-                       </TableCell>
-                       <TableCell key={Date.now()}>
-                        {    row.education.employmentStatus   }                                                                               
-                       </TableCell>
-                     
-                       <TableCell key={Date.now()}>
-                                               
-                  
-                        <Link to={`/userdetails/${row.id}`}> <BsThreeDotsVertical onClick={() => {
-                      setOpenModal(!open);
-                    }}/></Link>                                                   
 
-                       </TableCell>
-
+                      <TableCell key={Date.now()}>
+                        <Link to={`/userdetails/${row.id}`}>
+                          {" "}
+                          <BsThreeDotsVertical
+                            onClick={() => {
+                              setOpenModal(!open);
+                            }}
+                          />
+                        </Link>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -180,9 +185,8 @@ if(!users){
         />
       </Paper>
 
-   
       {open ? <FormOrg /> : ""}
-      {openModal ? <List /> :""}
+      {openModal ? <List /> : ""}
     </div>
   );
 }
