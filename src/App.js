@@ -13,7 +13,6 @@ function App() {
        
             <Route path="/dashboard" element={<Home />} />
             <Route exact path="/userdetails/:id" element={<UserDetails />} />
-     
           <Route path="/" element={<Login />} />
         </Routes>
       </BrowserRouter>
